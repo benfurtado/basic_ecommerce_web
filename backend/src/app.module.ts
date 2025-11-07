@@ -23,7 +23,7 @@ import { OrdersModule } from './orders/orders.module';
         password: configService.get('DB_PASSWORD', 'oracle'),
         database: configService.get('DB_DATABASE', 'ecommerce_db'),
         entities: [User, Product, Order],
-        synchronize: configService.get('NODE_ENV') !== 'production', // Auto-sync in dev, false in production
+        synchronize: true, // Enable auto-sync to create tables (set to false after initial setup)
       }),
       inject: [ConfigService],
     }),

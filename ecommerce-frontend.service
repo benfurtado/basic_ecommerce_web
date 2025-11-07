@@ -1,0 +1,26 @@
+[Unit]
+Description=Ecommerce Frontend Service
+After=network.target ecommerce-backend.service
+Wants=ecommerce-backend.service
+
+[Service]
+Type=simple
+User=ecommerce
+Group=ecommerce
+WorkingDirectory=/home/ecommerce/basic_ecommerce_web/frontend
+Environment="NODE_ENV=production"
+Environment="HOSTNAME=0.0.0.0"
+Environment="PORT=3000"
+EnvironmentFile=-/home/ecommerce/basic_ecommerce_web/frontend/.env.local
+ExecStartPre=/bin/bash -c 'cd /home/ecommerce/basic_ecommerce_web/frontend && if [ ! -d "node_modules" ]; then /usr/bin/npm install; else /usr/bin/npm install --include=dev; fi'
+ExecStartPre=/bin/bash -c 'cd /home/ecommerce/basic_ecommerce_web/frontend && if [ ! -d ".next" ]; then /usr/bin/npm run build; fi'
+ExecStart=/bin/bash -c 'cd /home/ecommerce/basic_ecommerce_web/frontend && /usr/bin/npm run start'
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=ecommerce-frontend
+
+[Install]
+WantedBy=multi-user.target
+

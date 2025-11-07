@@ -1,0 +1,26 @@
+[Unit]
+Description=Ecommerce Backend Service
+After=network.target mysql.service
+Wants=mysql.service
+
+[Service]
+Type=simple
+User=ecommerce
+Group=ecommerce
+WorkingDirectory=/home/ecommerce/basic_ecommerce_web/backend
+Environment="NODE_ENV=production"
+Environment="PORT=3001"
+Environment="HOST=0.0.0.0"
+EnvironmentFile=-/home/ecommerce/basic_ecommerce_web/backend/.env
+ExecStartPre=/bin/bash -c 'cd /home/ecommerce/basic_ecommerce_web/backend && if [ ! -d "node_modules" ]; then /usr/bin/npm install; fi'
+ExecStartPre=/bin/bash -c 'cd /home/ecommerce/basic_ecommerce_web/backend && if [ ! -d "dist" ]; then /usr/bin/npm run build; fi'
+ExecStart=/bin/bash -c 'cd /home/ecommerce/basic_ecommerce_web/backend && /usr/bin/npm run start:prod'
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=ecommerce-backend
+
+[Install]
+WantedBy=multi-user.target
+

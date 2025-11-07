@@ -201,6 +201,49 @@ The backend will be available at `http://localhost:3001`
 
 ## Deployment
 
+### IP-based Deployment (Self-hosted) 🚀
+
+**For hosting on your own server with an IP address:**
+
+See **[QUICK-START-IP.md](./QUICK-START-IP.md)** for quick setup or **[IP-DEPLOYMENT.md](./IP-DEPLOYMENT.md)** for detailed instructions.
+
+**Quick commands:**
+```bash
+# Setup environment files
+./env-setup.sh
+
+# Option 1: Using systemd (Recommended)
+sudo ./install-systemd-services.sh
+sudo systemctl start ecommerce-backend ecommerce-frontend
+
+# Option 2: Using startup scripts
+./start-all.sh
+
+# Option 3: Using PM2
+pm2 start ecosystem.config.js
+```
+
+**Access:**
+- Frontend: `http://YOUR_SERVER_IP:3000`
+- Backend: `http://YOUR_SERVER_IP:3001`
+
+**Systemd Management:**
+```bash
+# View status
+sudo systemctl status ecommerce-backend ecommerce-frontend
+
+# View logs
+sudo journalctl -u ecommerce-backend -f
+sudo journalctl -u ecommerce-frontend -f
+
+# Restart services
+sudo systemctl restart ecommerce-backend ecommerce-frontend
+```
+
+See **[SYSTEMD-DEPLOYMENT.md](./SYSTEMD-DEPLOYMENT.md)** for detailed systemd instructions.
+
+---
+
 ### Frontend Deployment (Vercel) ✅ Recommended
 
 **Yes, you can deploy the frontend on Vercel!** Vercel is perfect for Next.js applications.

@@ -11,6 +11,7 @@ async function bootstrap() {
     process.env.FRONTEND_URL,
   ].filter(Boolean); // Remove undefined values
 
+  // If FRONTEND_URL is not set, allow all origins (useful for IP-based deployment)
   app.enableCors({
     origin: allowedOrigins.length > 0 ? allowedOrigins : true, // Allow all in dev if no URL set
     credentials: true,
@@ -20,8 +21,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const port = process.env.PORT || 3001;
-  await app.listen(port);
-  console.log(`Backend server running on http://localhost:${port}`);
+  const host = process.env.HOST || '0.0.0.0'; // Listen on all interfaces to accept connections from IP
+  await app.listen(port, host);
+  console.log(`Backend server running on http://${host}:${port}`);
+  console.log(`Backend accessible at http://0.0.0.0:${port} or http://<your-ip>:${port}`);
 }
 
 bootstrap();
